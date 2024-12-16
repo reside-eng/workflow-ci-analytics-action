@@ -31,13 +31,19 @@
     "@types/node": "22.10.2"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.9.4",
     "@commitlint/cli": "19.6.1",
     "@side/commitlint-config": "1.1.0",
-    "biome": "0.3.3",
     "husky": "9.1.7",
     "pinst": "3.0.0",
     "rimraf": "6.0.1",
     "ts-node": "10.9.2",
     "vitest": "2.1.8"
-  }
+  },
+  "lint-staged": {
+    "*.{json,md,yaml,yml,js,ts}": [
+      "biome check --no-errors-on-unmatched --write"
+    ]
+  },
+  "packageManager": "yarn@4.5.3"
 }

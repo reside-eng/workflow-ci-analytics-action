@@ -3,7 +3,15 @@ import { context } from '@actions/github';
 import { Inputs } from './inputs';
 import { BigQuery } from '@google-cloud/bigquery';
 
-async function sendToBigQuery({createdAt, startedAt, completedAt}: {createdAt: string, startedAt: string, completedAt: string}): Promise<void> {
+async function sendToBigQuery({
+  createdAt,
+  startedAt,
+  completedAt,
+}: {
+  createdAt: string;
+  startedAt: string;
+  completedAt: string;
+}): Promise<void> {
   const client = new BigQuery();
 
   const schema = 'Created_At:string, Started_At:string, Completed_At:string';
@@ -19,7 +27,7 @@ async function sendToBigQuery({createdAt, startedAt, completedAt}: {createdAt: s
 
   // Create a new table in the dataset
   const [table] = await client
-    .dataset('github', {projectId: 'side-dw-dev'})
+    .dataset('github', { projectId: 'side-dw-dev' })
     .createTable('ci_analytics', options);
   core.info(`Table ${table.id} created with partitioning: `);
   core.info(table.metadata.timePartitioning);
@@ -28,7 +36,7 @@ async function sendToBigQuery({createdAt, startedAt, completedAt}: {createdAt: s
     Created_At: createdAt,
     Started_At: startedAt,
     Completed_At: completedAt,
-  })
+  });
 }
 
 /**
@@ -46,7 +54,7 @@ async function pipeline(): Promise<void> {
   core.info(`createdAt: ${startedAt}`);
   core.info(`createdAt: ${completedAt}`);
 
-  sendToBigQuery({createdAt, startedAt, completedAt});
+  sendToBigQuery({ createdAt, startedAt, completedAt });
   core.info(`Successfully Set CI Analytics in bigquery`);
 }
 
