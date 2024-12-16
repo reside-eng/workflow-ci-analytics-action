@@ -1,0 +1,43 @@
+{
+  "name": "@side/workflow-ci-analytics-action",
+  "version": "0.0.0-development",
+  "main": "dist/index.js",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "postinstall": "husky",
+    "format": "biome format --write",
+    "format-check": "biome format",
+    "lint": "biome lint",
+    "build": "yarn build:lib && yarn build:esm && build:docs",
+    "build:docs": "tsx bin/generate-docs.ts && prettier --write README.md",
+    "build:lib": "rimraf dist && tsc",
+    "build:esm": "rimraf esm && tsc -m ESNext --outDir esm",
+    "test": "vitest",
+    "test:cov": "yarn test --coverage",
+    "types:check": "tsc --noEmit",
+    "prepack": "pinst --disable",
+    "postpack": "pinst --enable"
+  },
+  "dependencies": {
+    "@actions/core": "1.11.1",
+    "@actions/github": "6.0.0",
+    "@google-cloud/bigquery": "7.9.1",
+    "@types/node": "22.10.2"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "19.6.1",
+    "@side/commitlint-config": "1.1.0",
+    "biome": "0.3.3",
+    "husky": "9.1.7",
+    "pinst": "3.0.0",
+    "rimraf": "6.0.1",
+    "ts-node": "10.9.2",
+    "vitest": "2.1.8"
+  }
+}
