@@ -67912,7 +67912,7 @@ const core = __importStar(__nccwpck_require__(7484));
 const github_1 = __nccwpck_require__(3228);
 const bigquery_1 = __nccwpck_require__(676);
 const inputs_1 = __nccwpck_require__(8422);
-async function sendToBigQuery({ createdAt, startedAt, completedAt, matrixName, matrixValue, result, draft, jobLink, repository, workflow, job, actor, runId, runNumber, sha, eventName, jobDuration, runDuration, }) {
+async function sendToBigQuery({ createdAt, startedAt, completedAt, matrixName, matrixValue, result, draft, jobLink, repository, workflow, job, actor, runId, runNumber, sha, eventName, jobDuration, runDuration, env, }) {
     const client = new bigquery_1.BigQuery();
     const schema = 'Created_At:string, Started_At:string, Completed_At:string, MatrixName:string, MatrixValue:string, Result:string, IsDraft:boolean, JobLink:string';
     const options = {
@@ -67947,6 +67947,7 @@ async function sendToBigQuery({ createdAt, startedAt, completedAt, matrixName, m
         event_name: eventName,
         job_duration: jobDuration,
         run_duration: runDuration,
+        env: env,
     });
 }
 async function pipeline() {
@@ -67976,6 +67977,7 @@ async function pipeline() {
     }
     const jobDuration = Math.floor(Math.abs(completedAtDate.getTime() - createdAtDate.getTime()) / 1000);
     const runDuration = Math.floor(Math.abs(completedAtDate.getTime() - startedAtDate.getTime()) / 1000);
+    const env = process.env.ENV ?? '';
     core.info('Successfully triggering CI Analytics action');
     core.info(`createdAt: ${createdAt}`);
     core.info(`startedAt: ${startedAt}`);
@@ -67995,6 +67997,7 @@ async function pipeline() {
     core.info(`eventName: ${eventName}`);
     core.info(`jobDuration: ${jobDuration}`);
     core.info(`runDuration: ${runDuration}`);
+    core.info(`env: ${env}`);
     sendToBigQuery({
         createdAt,
         startedAt,
@@ -68014,6 +68017,7 @@ async function pipeline() {
         eventName,
         jobDuration,
         runDuration,
+        env,
     });
     core.info('Successfully Set CI Analytics in bigquery');
 }

@@ -22,6 +22,7 @@ async function sendToBigQuery({
   eventName,
   jobDuration,
   runDuration,
+  env,
 }: {
   createdAt: string;
   startedAt: string;
@@ -41,6 +42,7 @@ async function sendToBigQuery({
   eventName: string;
   jobDuration: number;
   runDuration: number;
+  env: string;
 }): Promise<void> {
   const client = new BigQuery();
 
@@ -82,6 +84,7 @@ async function sendToBigQuery({
     event_name: eventName,
     job_duration: jobDuration,
     run_duration: runDuration,
+    env: env,
   });
 }
 
@@ -132,6 +135,8 @@ async function pipeline(): Promise<void> {
     Math.abs(completedAtDate.getTime() - startedAtDate.getTime()) / 1000,
   );
 
+  const env: string = process.env.ENV ?? '';
+
   core.info('Successfully triggering CI Analytics action');
   core.info(`createdAt: ${createdAt}`);
   core.info(`startedAt: ${startedAt}`);
@@ -157,6 +162,7 @@ async function pipeline(): Promise<void> {
   // core.info(`runnerType: ${runnerType}`);
   core.info(`jobDuration: ${jobDuration}`);
   core.info(`runDuration: ${runDuration}`);
+  core.info(`env: ${env}`);
 
   sendToBigQuery({
     createdAt,
@@ -177,6 +183,7 @@ async function pipeline(): Promise<void> {
     eventName,
     jobDuration,
     runDuration,
+    env,
   });
   core.info('Successfully Set CI Analytics in bigquery');
 }
