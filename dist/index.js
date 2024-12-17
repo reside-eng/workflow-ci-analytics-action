@@ -67920,10 +67920,10 @@ async function sendToBigQuery({ createdAt, startedAt, completedAt, }) {
             field: 'date',
         },
     };
-    const [table] = await client
+    const table = await client
         .dataset('github', { projectId: 'side-dw-dev' })
-        .createTable('ci_analytics', options);
-    core.info(`Table ${table.id} created with partitioning: `);
+        .table('ci_analytics');
+    core.info(`Retrieved table ${table.id} created with partitioning: `);
     core.info(table.metadata.timePartitioning);
     table.insert({
         Created_At: createdAt,
@@ -67938,8 +67938,8 @@ async function pipeline() {
     const repository = github_1.context.repo.repo;
     core.info('Successfully triggering CI Analytics action');
     core.info(`createdAt: ${createdAt}`);
-    core.info(`createdAt: ${startedAt}`);
-    core.info(`createdAt: ${completedAt}`);
+    core.info(`startedAt: ${startedAt}`);
+    core.info(`completedAt: ${completedAt}`);
     sendToBigQuery({ createdAt, startedAt, completedAt });
     core.info('Successfully Set CI Analytics in bigquery');
 }
