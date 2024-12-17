@@ -1,7 +1,7 @@
 import * as core from '@actions/core';
 import { context } from '@actions/github';
-import { Inputs } from './inputs';
 import { BigQuery } from '@google-cloud/bigquery';
+import { Inputs } from './inputs';
 
 async function sendToBigQuery({
   createdAt,
@@ -49,13 +49,13 @@ async function pipeline(): Promise<void> {
 
   const repository = context.repo.repo;
 
-  core.info(`Successfully triggering CI Analytics action`);
+  core.info('Successfully triggering CI Analytics action');
   core.info(`createdAt: ${createdAt}`);
   core.info(`createdAt: ${startedAt}`);
   core.info(`createdAt: ${completedAt}`);
 
   sendToBigQuery({ createdAt, startedAt, completedAt });
-  core.info(`Successfully Set CI Analytics in bigquery`);
+  core.info('Successfully Set CI Analytics in bigquery');
 }
 
 /**
