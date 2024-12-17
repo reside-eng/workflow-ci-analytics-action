@@ -69,6 +69,10 @@ async function pipeline(): Promise<void> {
   const result = core.getInput(Inputs.Result);
   const draft = core.getInput(Inputs.Draft);
   const jobLink = core.getInput(Inputs.JobLink);
+
+  core.info('github context object: ');
+  core.info(JSON.stringify(context, null, 2));
+
   const {
     repo: { repo: repository },
     workflow,
