@@ -24,14 +24,7 @@ At the end of a workflow call this action to send ci analytics to big query
     started_at: ''
 
     # Timestamp when the job was completed
-    #
-    # Required: true
     completed_at: ''
-
-    # Status of the current run
-    #
-    # Required: true
-    github-token: ''
 ```
 <!-- end usage -->
 

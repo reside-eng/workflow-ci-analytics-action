@@ -30,8 +30,7 @@ async function sendToBigQuery({
     .dataset('github', { projectId: 'side-dw-dev' })
     .table('ci_analytics');
 
-  core.info(`Retrieved table ${table.id} created with partitioning: `);
-  core.info(table.metadata.timePartitioning);
+  core.info(`Retrieved table ${table.id}`);
 
   table.insert({
     Created_At: createdAt,

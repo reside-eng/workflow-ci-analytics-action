@@ -1,21 +1,15 @@
 name: 'Workflow CI Analytics'
-description: 'Notify upon workflow failure/success'
+description: 'Send Github Data Analytics to the Data Warehouse'
 inputs:
   created_at:
     description: 'Timestamp when the job was created'
     required: true
-    default: ''
   started_at:
     description: 'Timestamp when the job was started'
     required: true
-    default: ''
   completed_at:
     description: 'Timestamp when the job was completed'
-    required: true
-    default: ''
-  github-token:
-    description: 'Status of the current run'
-    required: true
+    required: false
     default: ''
 runs:
   using: 'node20'
