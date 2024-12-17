@@ -24,6 +24,8 @@ At the end of a workflow call this action to send ci analytics to big query
     started_at: ''
 
     # Timestamp when the job was completed
+    #
+    # Required: true
     completed_at: ''
 ```
 <!-- end usage -->
