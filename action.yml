@@ -13,6 +13,26 @@ inputs:
     description: 'Timestamp when the job was completed'
     required: true
     default: ''
+  matrix_name:
+    description: 'matrix variable name (for parallel jobs only)'
+    required: false
+    default: ''
+  matrix_value:
+    description: 'matrix variable value (for parallel jobs only)'
+    required: false
+    default: ''
+  result:
+    description: 'The outcome status for the job'
+    required: true
+    default: ''
+  draft:
+    description: 'Is the running job triggered by a draft'
+    required: false
+    default: false
+  job_link:
+    description: 'The url for the job'
+    required: true
+    default: ''
   github-token:
     description: 'Status of the current run'
     required: true
