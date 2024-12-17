@@ -27,6 +27,27 @@ At the end of a workflow call this action to send ci analytics to big query
     #
     # Required: true
     completed_at: ''
+
+    # matrix variable name (for parallel jobs only)
+    matrix_name: ''
+
+    # matrix variable value (for parallel jobs only)
+    matrix_value: ''
+
+    # The outcome status for the job
+    #
+    # Required: true
+    result: ''
+
+    # Is the running job triggered by a draft
+    #
+    # Default: false
+    draft: ''
+
+    # The url for the job
+    #
+    # Required: true
+    job_link: ''
 ```
 <!-- end usage -->
 
@@ -63,11 +84,16 @@ jobs:
 
       - uses: technote-space/workflow-conclusion-action@v2.0.1
 
-      - uses: reside-eng/workflow-ci-analytics-action@v1.0.0
+      - uses: reside-eng/workflow-ci-analytics-action@v1
         with:
           created_at: timestamp
           started_at: timestamp
           completed_at: timestamp
+          matrix_name: string
+          matrix_value: string
+          result: string
+          draft: false
+          job_link: string
           github-token: ${{ secrets.GITHUB_TOKEN }}
 ```
 

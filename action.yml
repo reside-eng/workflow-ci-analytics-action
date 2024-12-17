@@ -10,6 +10,25 @@ inputs:
   completed_at:
     description: 'Timestamp when the job was completed'
     required: true
+  matrix_name:
+    description: 'matrix variable name (for parallel jobs only)'
+    required: false
+    default: ''
+  matrix_value:
+    description: 'matrix variable value (for parallel jobs only)'
+    required: false
+    default: ''
+  result:
+    description: 'The outcome status for the job'
+    required: true
+    default: ''
+  draft:
+    description: 'Is the running job triggered by a draft'
+    required: false
+    default: 'false'
+  job_link:
+    description: 'The url for the job'
+    required: true
 runs:
   using: 'node20'
   main: 'dist/index.js'
