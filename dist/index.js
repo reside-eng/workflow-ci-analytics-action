@@ -67912,7 +67912,7 @@ const core = __importStar(__nccwpck_require__(7484));
 const github_1 = __nccwpck_require__(3228);
 const bigquery_1 = __nccwpck_require__(676);
 const inputs_1 = __nccwpck_require__(8422);
-async function sendToBigQuery({ createdAt, startedAt, completedAt, matrixName, matrixValue, result, draft, jobLink, repository, workflow, job, actor, runId, runNumber, sha, eventName, }) {
+async function sendToBigQuery({ createdAt, startedAt, completedAt, matrixName, matrixValue, result, draft, jobLink, repository, workflow, job, actor, runId, runNumber, sha, eventName, jobDuration, runDuration, }) {
     const client = new bigquery_1.BigQuery();
     const schema = 'Created_At:string, Started_At:string, Completed_At:string, MatrixName:string, MatrixValue:string, Result:string, IsDraft:boolean, JobLink:string';
     const options = {
@@ -67945,6 +67945,8 @@ async function sendToBigQuery({ createdAt, startedAt, completedAt, matrixName, m
         run_number: runNumber,
         sha: sha,
         event_name: eventName,
+        job_duration: jobDuration,
+        run_duration: runDuration,
     });
 }
 async function pipeline() {
@@ -67964,6 +67966,16 @@ async function pipeline() {
     const runNumber = github_1.context.runNumber;
     const sha = github_1.context.sha;
     const eventName = github_1.context.eventName;
+    const createdAtDate = new Date(createdAt);
+    const startedAtDate = new Date(startedAt);
+    const completedAtDate = new Date(completedAt);
+    if (Number.isNaN(createdAtDate.getTime()) ||
+        Number.isNaN(startedAtDate.getTime()) ||
+        Number.isNaN(completedAtDate.getTime())) {
+        throw new Error('Invalid date');
+    }
+    const jobDuration = Math.floor(Math.abs(completedAtDate.getTime() - createdAtDate.getTime()) / 1000);
+    const runDuration = Math.floor(Math.abs(completedAtDate.getTime() - startedAtDate.getTime()) / 1000);
     core.info('Successfully triggering CI Analytics action');
     core.info(`createdAt: ${createdAt}`);
     core.info(`startedAt: ${startedAt}`);
@@ -67981,6 +67993,8 @@ async function pipeline() {
     core.info(`runNumber: ${runNumber}`);
     core.info(`sha: ${sha}`);
     core.info(`eventName: ${eventName}`);
+    core.info(`jobDuration: ${jobDuration}`);
+    core.info(`runDuration: ${runDuration}`);
     sendToBigQuery({
         createdAt,
         startedAt,
@@ -67998,6 +68012,8 @@ async function pipeline() {
         runNumber,
         sha,
         eventName,
+        jobDuration,
+        runDuration,
     });
     core.info('Successfully Set CI Analytics in bigquery');
 }

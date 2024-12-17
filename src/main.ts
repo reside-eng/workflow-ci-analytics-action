@@ -20,6 +20,8 @@ async function sendToBigQuery({
   runNumber,
   sha,
   eventName,
+  jobDuration,
+  runDuration,
 }: {
   createdAt: string;
   startedAt: string;
@@ -37,6 +39,8 @@ async function sendToBigQuery({
   runNumber: number;
   sha: string;
   eventName: string;
+  jobDuration: number;
+  runDuration: number;
 }): Promise<void> {
   const client = new BigQuery();
 
@@ -76,6 +80,8 @@ async function sendToBigQuery({
     run_number: runNumber,
     sha: sha,
     event_name: eventName,
+    job_duration: jobDuration,
+    run_duration: runDuration,
   });
 }
 
@@ -108,6 +114,24 @@ async function pipeline(): Promise<void> {
   //const runnerName = context.runnerName;
   //const runnerType = context.runnerType;
 
+  const createdAtDate: Date = new Date(createdAt);
+  const startedAtDate: Date = new Date(startedAt);
+  const completedAtDate: Date = new Date(completedAt);
+  if (
+    Number.isNaN(createdAtDate.getTime()) ||
+    Number.isNaN(startedAtDate.getTime()) ||
+    Number.isNaN(completedAtDate.getTime())
+  ) {
+    throw new Error('Invalid date');
+  }
+
+  const jobDuration: number = Math.floor(
+    Math.abs(completedAtDate.getTime() - createdAtDate.getTime()) / 1000,
+  );
+  const runDuration: number = Math.floor(
+    Math.abs(completedAtDate.getTime() - startedAtDate.getTime()) / 1000,
+  );
+
   core.info('Successfully triggering CI Analytics action');
   core.info(`createdAt: ${createdAt}`);
   core.info(`startedAt: ${startedAt}`);
@@ -131,6 +155,8 @@ async function pipeline(): Promise<void> {
   // core.info(`baseRef: ${baseRef}`);
   // core.info(`runnerName: ${runnerName}`);
   // core.info(`runnerType: ${runnerType}`);
+  core.info(`jobDuration: ${jobDuration}`);
+  core.info(`runDuration: ${runDuration}`);
 
   sendToBigQuery({
     createdAt,
@@ -149,6 +175,8 @@ async function pipeline(): Promise<void> {
     runNumber,
     sha,
     eventName,
+    jobDuration,
+    runDuration,
   });
   core.info('Successfully Set CI Analytics in bigquery');
 }
