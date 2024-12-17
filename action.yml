@@ -29,6 +29,24 @@ inputs:
   job_link:
     description: 'The url for the job'
     required: true
+  triggering_actor:
+    description: 'The triggering actor'
+    required: true
+  run_attempt:
+    description: 'The run attempt number'
+    required: true
+  head_ref:
+    description: 'The head ref'
+    required: true
+  base_ref:
+    description: 'The base ref'
+    required: true
+  runner_type:
+    description: 'The runner type'
+    required: true
+  runner_name:
+    description: 'The runner name'
+    required: true
 runs:
   using: 'node20'
   main: 'dist/index.js'

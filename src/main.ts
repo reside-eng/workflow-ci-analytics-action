@@ -69,6 +69,12 @@ async function pipeline(): Promise<void> {
   const result = core.getInput(Inputs.Result);
   const draft = core.getInput(Inputs.Draft);
   const jobLink = core.getInput(Inputs.JobLink);
+  const triggeringActor = core.getInput(Inputs.TriggeringActor);
+  const runAttempt = Number(core.getInput(Inputs.RunAttempt));
+  const headRef = core.getInput(Inputs.HeadRef);
+  const baseRef = core.getInput(Inputs.BaseRef);
+  const runnerType = core.getInput(Inputs.RunnerType);
+  const runnerName = core.getInput(Inputs.RunnerName);
 
   core.info('github context object: ');
   core.info(JSON.stringify(context, null, 2));
@@ -83,16 +89,6 @@ async function pipeline(): Promise<void> {
     sha,
     eventName,
   } = context;
-  // Lines below are context details that don't seem to be supported by '@actions/github'.
-  const {
-    triggeringActor,
-    runAttempt,
-    headRef,
-    baseRef,
-    runnerName,
-    runnerType,
-    // biome-ignore lint/suspicious/noExplicitAny: testing
-  } = context as Record<string, any>;
 
   const createdAtDate: Date = new Date(createdAt);
   const startedAtDate: Date = new Date(startedAt);

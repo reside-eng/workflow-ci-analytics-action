@@ -6,5 +6,11 @@ export declare enum Inputs {
     MatrixValue = "matrix_value",
     Result = "result",
     Draft = "draft",
-    JobLink = "job_link"
+    JobLink = "job_link",
+    TriggeringActor = "triggering_actor",
+    RunAttempt = "run_attempt",
+    HeadRef = "head_ref",
+    BaseRef = "base_ref",
+    RunnerType = "runner_type",
+    RunnerName = "runner_name"
 }

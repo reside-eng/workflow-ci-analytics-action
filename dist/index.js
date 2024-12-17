@@ -67863,6 +67863,12 @@ var Inputs;
     Inputs["Result"] = "result";
     Inputs["Draft"] = "draft";
     Inputs["JobLink"] = "job_link";
+    Inputs["TriggeringActor"] = "triggering_actor";
+    Inputs["RunAttempt"] = "run_attempt";
+    Inputs["HeadRef"] = "head_ref";
+    Inputs["BaseRef"] = "base_ref";
+    Inputs["RunnerType"] = "runner_type";
+    Inputs["RunnerName"] = "runner_name";
 })(Inputs || (exports.Inputs = Inputs = {}));
 
 
@@ -67940,10 +67946,15 @@ async function pipeline() {
     const result = core.getInput(inputs_1.Inputs.Result);
     const draft = core.getInput(inputs_1.Inputs.Draft);
     const jobLink = core.getInput(inputs_1.Inputs.JobLink);
+    const triggeringActor = core.getInput(inputs_1.Inputs.TriggeringActor);
+    const runAttempt = Number(core.getInput(inputs_1.Inputs.RunAttempt));
+    const headRef = core.getInput(inputs_1.Inputs.HeadRef);
+    const baseRef = core.getInput(inputs_1.Inputs.BaseRef);
+    const runnerType = core.getInput(inputs_1.Inputs.RunnerType);
+    const runnerName = core.getInput(inputs_1.Inputs.RunnerName);
     core.info('github context object: ');
     core.info(JSON.stringify(github_1.context, null, 2));
     const { repo: { repo: repository }, workflow, job, actor, runId, runNumber, sha, eventName, } = github_1.context;
-    const { triggeringActor, runAttempt, headRef, baseRef, runnerName, runnerType, } = github_1.context;
     const createdAtDate = new Date(createdAt);
     const startedAtDate = new Date(startedAt);
     const completedAtDate = new Date(completedAt);

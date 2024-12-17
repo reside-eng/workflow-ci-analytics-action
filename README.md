@@ -48,6 +48,36 @@ At the end of a workflow call this action to send ci analytics to big query
     #
     # Required: true
     job_link: ''
+
+    # The triggering actor
+    #
+    # Required: true
+    triggering_actor: ''
+
+    # The run attempt number
+    #
+    # Required: true
+    run_attempt: ''
+
+    # The head ref
+    #
+    # Required: true
+    head_ref: ''
+
+    # The base ref
+    #
+    # Required: true
+    base_ref: ''
+
+    # The runner type
+    #
+    # Required: true
+    runner_type: ''
+
+    # The runner name
+    #
+    # Required: true
+    runner_name: ''
 ```
 <!-- end usage -->
 

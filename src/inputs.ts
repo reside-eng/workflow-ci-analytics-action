@@ -7,4 +7,10 @@ export enum Inputs {
   Result = 'result',
   Draft = 'draft',
   JobLink = 'job_link',
+  TriggeringActor = 'triggering_actor',
+  RunAttempt = 'run_attempt',
+  HeadRef = 'head_ref',
+  BaseRef = 'base_ref',
+  RunnerType = 'runner_type',
+  RunnerName = 'runner_name',
 }
