@@ -13,10 +13,6 @@ inputs:
     description: 'Timestamp when the job was completed'
     required: true
     default: ''
-  result:
-    description: 'The result of the job'
-    required: true
-    default: ''
   github-token:
     description: 'Status of the current run'
     required: true
