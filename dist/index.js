@@ -67931,6 +67931,7 @@ async function sendToBigQuery(analyticsObject) {
     table.insert(analyticsObject);
 }
 async function pipeline() {
+    core.info('Successfully triggering CI Analytics action');
     const createdAt = core.getInput(inputs_1.Inputs.CreatedAt);
     const startedAt = core.getInput(inputs_1.Inputs.StartedAt);
     const completedAt = core.getInput(inputs_1.Inputs.CompletedAt);
@@ -67939,14 +67940,7 @@ async function pipeline() {
     const result = core.getInput(inputs_1.Inputs.Result);
     const draft = core.getInput(inputs_1.Inputs.Draft);
     const jobLink = core.getInput(inputs_1.Inputs.JobLink);
-    const repository = github_1.context.repo.repo;
-    const workflow = github_1.context.workflow;
-    const job = github_1.context.job;
-    const actor = github_1.context.actor;
-    const runId = github_1.context.runId;
-    const runNumber = github_1.context.runNumber;
-    const sha = github_1.context.sha;
-    const eventName = github_1.context.eventName;
+    const { repo: { repo: repository }, workflow, job, actor, runId, runNumber, sha, eventName, } = github_1.context;
     const { triggeringActor, runAttempt, headRef, baseRef, runnerName, runnerType, } = github_1.context;
     const createdAtDate = new Date(createdAt);
     const startedAtDate = new Date(startedAt);
@@ -67986,9 +67980,9 @@ async function pipeline() {
         job_duration: jobDuration,
         run_duration: runDuration,
     };
-    core.info('Successfully triggering CI Analytics action');
-    core.info(JSON.stringify(analyticsObject));
-    sendToBigQuery(analyticsObject);
+    core.info('Analytics Object: ');
+    core.info(JSON.stringify(analyticsObject, null, 2));
+    await sendToBigQuery(analyticsObject);
     core.info('Successfully Set CI Analytics in bigquery');
 }
 function handleError(err) {

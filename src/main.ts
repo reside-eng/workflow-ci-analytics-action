@@ -60,6 +60,7 @@ async function sendToBigQuery(analyticsObject: AnalyticsObject): Promise<void> {
  * Action run pipeline
  */
 async function pipeline(): Promise<void> {
+  core.info('Successfully triggering CI Analytics action');
   const createdAt = core.getInput(Inputs.CreatedAt);
   const startedAt = core.getInput(Inputs.StartedAt);
   const completedAt = core.getInput(Inputs.CompletedAt);
@@ -68,15 +69,16 @@ async function pipeline(): Promise<void> {
   const result = core.getInput(Inputs.Result);
   const draft = core.getInput(Inputs.Draft);
   const jobLink = core.getInput(Inputs.JobLink);
-
-  const repository = context.repo.repo;
-  const workflow = context.workflow;
-  const job = context.job;
-  const actor = context.actor;
-  const runId = context.runId;
-  const runNumber = context.runNumber;
-  const sha = context.sha;
-  const eventName = context.eventName;
+  const {
+    repo: { repo: repository },
+    workflow,
+    job,
+    actor,
+    runId,
+    runNumber,
+    sha,
+    eventName,
+  } = context;
   // Lines below are context details that don't seem to be supported by '@actions/github'.
   const {
     triggeringActor,
@@ -135,11 +137,10 @@ async function pipeline(): Promise<void> {
     job_duration: jobDuration,
     run_duration: runDuration,
   };
+  core.info('Analytics Object: ');
+  core.info(JSON.stringify(analyticsObject, null, 2));
 
-  core.info('Successfully triggering CI Analytics action');
-  core.info(JSON.stringify(analyticsObject));
-
-  sendToBigQuery(analyticsObject);
+  await sendToBigQuery(analyticsObject);
   core.info('Successfully Set CI Analytics in bigquery');
 }
 
