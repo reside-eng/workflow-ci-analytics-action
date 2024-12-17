@@ -24,7 +24,7 @@ async function sendToBigQuery({
 }): Promise<void> {
   const client = new BigQuery();
 
-  const schema = 'Created_At:string, Started_At:string, Completed_At:string, MatrixName:string, MatrixValue:string, Result:string, IsDraft:boolean, JobLink:string';
+  const schema = 'Created_At:string, Started_At:string, Completed_At:string, MatrixName:string, MatrixValue:string, Result:string, Draft:boolean, JobLink:string';
   const options = {
     schema: schema,
     location: 'US',
