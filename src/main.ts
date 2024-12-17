@@ -3,47 +3,35 @@ import { context } from '@actions/github';
 import { BigQuery } from '@google-cloud/bigquery';
 import { Inputs } from './inputs';
 
-async function sendToBigQuery({
-  createdAt,
-  startedAt,
-  completedAt,
-  matrixName,
-  matrixValue,
-  result,
-  draft,
-  jobLink,
-  repository,
-  workflow,
-  job,
-  actor,
-  runId,
-  runNumber,
-  sha,
-  eventName,
-  jobDuration,
-  runDuration,
-  env,
-}: {
-  createdAt: string;
-  startedAt: string;
-  completedAt: string;
-  matrixName: string;
-  matrixValue: string;
+type AnalyticsObject = {
+  created_at: string;
+  started_at: string;
+  completed_at: string;
+  matrix_name: string;
+  matrix_value: string;
   result: string;
   draft: string;
-  jobLink: string;
+  job_link: string;
   repository: string;
   workflow: string;
   job: string;
   actor: string;
-  runId: number;
-  runNumber: number;
+  run_id: number;
+  run_number: number;
   sha: string;
-  eventName: string;
-  jobDuration: number;
-  runDuration: number;
+  event_name: string;
+  run_attempt: number;
+  job_duration: number;
+  run_duration: number;
   env: string;
-}): Promise<void> {
+  triggering_actor: string;
+  head_ref: string;
+  base_ref: string;
+  runner_name: string;
+  runner_type: string;
+};
+
+async function sendToBigQuery(analyticsObject: AnalyticsObject): Promise<void> {
   const client = new BigQuery();
 
   const schema =
@@ -65,27 +53,7 @@ async function sendToBigQuery({
 
   core.info(`Retrieved table ${table.id}`);
 
-  table.insert({
-    created_at: createdAt,
-    started_at: startedAt,
-    completed_at: completedAt,
-    matrix_name: matrixName,
-    matrix_value: matrixValue,
-    result: result,
-    draft: draft,
-    job_link: jobLink,
-    repository: repository,
-    workflow: workflow,
-    job: job,
-    actor: actor,
-    run_id: runId,
-    run_number: runNumber,
-    sha: sha,
-    event_name: eventName,
-    job_duration: jobDuration,
-    run_duration: runDuration,
-    env: env,
-  });
+  table.insert(analyticsObject);
 }
 
 /**
@@ -109,13 +77,16 @@ async function pipeline(): Promise<void> {
   const runNumber = context.runNumber;
   const sha = context.sha;
   const eventName = context.eventName;
-  // Commented lines below are context details that doesn't seem to be supported by '@actions/github', will have a closer look soon.
-  //const triggeringActor = context.triggeringActor;
-  //const runAttempt = context.runAttempt
-  //const headRef = context.headRef;
-  //const baseRef = context.baseRef;
-  //const runnerName = context.runnerName;
-  //const runnerType = context.runnerType;
+  // Lines below are context details that don't seem to be supported by '@actions/github'.
+  const {
+    triggeringActor,
+    runAttempt,
+    headRef,
+    baseRef,
+    runnerName,
+    runnerType,
+    // biome-ignore lint/suspicious/noExplicitAny: testing
+  } = context as Record<string, any>;
 
   const createdAtDate: Date = new Date(createdAt);
   const startedAtDate: Date = new Date(startedAt);
@@ -137,54 +108,38 @@ async function pipeline(): Promise<void> {
 
   const env: string = process.env.ENV ?? '';
 
-  core.info('Successfully triggering CI Analytics action');
-  core.info(`createdAt: ${createdAt}`);
-  core.info(`startedAt: ${startedAt}`);
-  core.info(`completedAt: ${completedAt}`);
-  core.info(`matrixName: ${matrixName}`);
-  core.info(`matrixValue: ${matrixValue}`);
-  core.info(`result: ${result}`);
-  core.info(`draft: ${draft}`);
-  core.info(`jobLink: ${jobLink}`);
-  core.info(`repository: ${repository}`);
-  core.info(`workflow: ${workflow}`);
-  core.info(`job: ${job}`);
-  core.info(`actor: ${actor}`);
-  core.info(`runId: ${runId}`);
-  core.info(`runNumber: ${runNumber}`);
-  core.info(`sha: ${sha}`);
-  core.info(`eventName: ${eventName}`);
-  // core.info(`triggeringActor: ${triggeringActor}`);
-  // core.info(`runAttempt: ${runAttempt}`);
-  // core.info(`headRef: ${headRef}`);
-  // core.info(`baseRef: ${baseRef}`);
-  // core.info(`runnerName: ${runnerName}`);
-  // core.info(`runnerType: ${runnerType}`);
-  core.info(`jobDuration: ${jobDuration}`);
-  core.info(`runDuration: ${runDuration}`);
-  core.info(`env: ${env}`);
-
-  sendToBigQuery({
-    createdAt,
-    startedAt,
-    completedAt,
-    matrixName,
-    matrixValue,
+  const analyticsObject = {
+    created_at: createdAt,
+    started_at: startedAt,
+    completed_at: completedAt,
+    matrix_name: matrixName,
+    matrix_value: matrixValue,
     result,
     draft,
-    jobLink,
+    job_link: jobLink,
     repository,
     workflow,
     job,
     actor,
-    runId,
-    runNumber,
+    run_id: runId,
+    run_number: runNumber,
+    run_attempt: runAttempt,
     sha,
-    eventName,
-    jobDuration,
-    runDuration,
+    event_name: eventName,
     env,
-  });
+    triggering_actor: triggeringActor,
+    head_ref: headRef,
+    base_ref: baseRef,
+    runner_name: runnerName,
+    runner_type: runnerType,
+    job_duration: jobDuration,
+    run_duration: runDuration,
+  };
+
+  core.info('Successfully triggering CI Analytics action');
+  core.info(JSON.stringify(analyticsObject));
+
+  sendToBigQuery(analyticsObject);
   core.info('Successfully Set CI Analytics in bigquery');
 }
 

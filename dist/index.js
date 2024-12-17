@@ -67912,9 +67912,9 @@ const core = __importStar(__nccwpck_require__(7484));
 const github_1 = __nccwpck_require__(3228);
 const bigquery_1 = __nccwpck_require__(676);
 const inputs_1 = __nccwpck_require__(8422);
-async function sendToBigQuery({ createdAt, startedAt, completedAt, matrixName, matrixValue, result, draft, jobLink, repository, workflow, job, actor, runId, runNumber, sha, eventName, jobDuration, runDuration, env, }) {
+async function sendToBigQuery(analyticsObject) {
     const client = new bigquery_1.BigQuery();
-    const schema = 'Created_At:string, Started_At:string, Completed_At:string, MatrixName:string, MatrixValue:string, Result:string, IsDraft:boolean, JobLink:string';
+    const schema = 'Created_At:string, Started_At:string, Completed_At:string, MatrixName:string, MatrixValue:string, Result:string, Draft:boolean, JobLink:string';
     const options = {
         schema: schema,
         location: 'US',
@@ -67928,27 +67928,7 @@ async function sendToBigQuery({ createdAt, startedAt, completedAt, matrixName, m
         .dataset('github', { projectId: 'side-dw-dev' })
         .table('ci_analytics');
     core.info(`Retrieved table ${table.id}`);
-    table.insert({
-        created_at: createdAt,
-        started_at: startedAt,
-        completed_at: completedAt,
-        matrix_name: matrixName,
-        matrix_value: matrixValue,
-        result: result,
-        draft: draft,
-        job_link: jobLink,
-        repository: repository,
-        workflow: workflow,
-        job: job,
-        actor: actor,
-        run_id: runId,
-        run_number: runNumber,
-        sha: sha,
-        event_name: eventName,
-        job_duration: jobDuration,
-        run_duration: runDuration,
-        env: env,
-    });
+    table.insert(analyticsObject);
 }
 async function pipeline() {
     const createdAt = core.getInput(inputs_1.Inputs.CreatedAt);
@@ -67967,6 +67947,7 @@ async function pipeline() {
     const runNumber = github_1.context.runNumber;
     const sha = github_1.context.sha;
     const eventName = github_1.context.eventName;
+    const { triggeringActor, runAttempt, headRef, baseRef, runnerName, runnerType, } = github_1.context;
     const createdAtDate = new Date(createdAt);
     const startedAtDate = new Date(startedAt);
     const completedAtDate = new Date(completedAt);
@@ -67978,47 +67959,36 @@ async function pipeline() {
     const jobDuration = Math.floor(Math.abs(completedAtDate.getTime() - createdAtDate.getTime()) / 1000);
     const runDuration = Math.floor(Math.abs(completedAtDate.getTime() - startedAtDate.getTime()) / 1000);
     const env = process.env.ENV ?? '';
-    core.info('Successfully triggering CI Analytics action');
-    core.info(`createdAt: ${createdAt}`);
-    core.info(`startedAt: ${startedAt}`);
-    core.info(`completedAt: ${completedAt}`);
-    core.info(`matrixName: ${matrixName}`);
-    core.info(`matrixValue: ${matrixValue}`);
-    core.info(`result: ${result}`);
-    core.info(`draft: ${draft}`);
-    core.info(`jobLink: ${jobLink}`);
-    core.info(`repository: ${repository}`);
-    core.info(`workflow: ${workflow}`);
-    core.info(`job: ${job}`);
-    core.info(`actor: ${actor}`);
-    core.info(`runId: ${runId}`);
-    core.info(`runNumber: ${runNumber}`);
-    core.info(`sha: ${sha}`);
-    core.info(`eventName: ${eventName}`);
-    core.info(`jobDuration: ${jobDuration}`);
-    core.info(`runDuration: ${runDuration}`);
-    core.info(`env: ${env}`);
-    sendToBigQuery({
-        createdAt,
-        startedAt,
-        completedAt,
-        matrixName,
-        matrixValue,
+    const analyticsObject = {
+        created_at: createdAt,
+        started_at: startedAt,
+        completed_at: completedAt,
+        matrix_name: matrixName,
+        matrix_value: matrixValue,
         result,
         draft,
-        jobLink,
+        job_link: jobLink,
         repository,
         workflow,
         job,
         actor,
-        runId,
-        runNumber,
+        run_id: runId,
+        run_number: runNumber,
+        run_attempt: runAttempt,
         sha,
-        eventName,
-        jobDuration,
-        runDuration,
+        event_name: eventName,
         env,
-    });
+        triggering_actor: triggeringActor,
+        head_ref: headRef,
+        base_ref: baseRef,
+        runner_name: runnerName,
+        runner_type: runnerType,
+        job_duration: jobDuration,
+        run_duration: runDuration,
+    };
+    core.info('Successfully triggering CI Analytics action');
+    core.info(JSON.stringify(analyticsObject));
+    sendToBigQuery(analyticsObject);
     core.info('Successfully Set CI Analytics in bigquery');
 }
 function handleError(err) {
