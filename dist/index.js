@@ -67912,7 +67912,7 @@ const core = __importStar(__nccwpck_require__(7484));
 const github_1 = __nccwpck_require__(3228);
 const bigquery_1 = __nccwpck_require__(676);
 const inputs_1 = __nccwpck_require__(8422);
-async function sendToBigQuery({ createdAt, startedAt, completedAt, matrixName, matrixValue, result, draft, jobLink, }) {
+async function sendToBigQuery({ createdAt, startedAt, completedAt, matrixName, matrixValue, result, draft, jobLink, repository, workflow, job, actor, runId, runNumber, sha, eventName, }) {
     const client = new bigquery_1.BigQuery();
     const schema = 'Created_At:string, Started_At:string, Completed_At:string, MatrixName:string, MatrixValue:string, Result:string, IsDraft:boolean, JobLink:string';
     const options = {
@@ -67929,14 +67929,22 @@ async function sendToBigQuery({ createdAt, startedAt, completedAt, matrixName, m
         .table('ci_analytics');
     core.info(`Retrieved table ${table.id}`);
     table.insert({
-        Created_At: createdAt,
-        Started_At: startedAt,
-        Completed_At: completedAt,
-        MatrixName: matrixName,
-        MatrixValue: matrixValue,
-        Result: result,
-        Draft: draft,
-        JobLink: jobLink,
+        created_at: createdAt,
+        started_at: startedAt,
+        completed_at: completedAt,
+        matrix_name: matrixName,
+        matrix_value: matrixValue,
+        result: result,
+        draft: draft,
+        job_link: jobLink,
+        repository: repository,
+        workflow: workflow,
+        job: job,
+        actor: actor,
+        run_id: runId,
+        run_number: runNumber,
+        sha: sha,
+        event_name: eventName,
     });
 }
 async function pipeline() {
@@ -67949,6 +67957,13 @@ async function pipeline() {
     const draft = core.getInput(inputs_1.Inputs.Draft);
     const jobLink = core.getInput(inputs_1.Inputs.JobLink);
     const repository = github_1.context.repo.repo;
+    const workflow = github_1.context.workflow;
+    const job = github_1.context.job;
+    const actor = github_1.context.actor;
+    const runId = github_1.context.runId;
+    const runNumber = github_1.context.runNumber;
+    const sha = github_1.context.sha;
+    const eventName = github_1.context.eventName;
     core.info('Successfully triggering CI Analytics action');
     core.info(`createdAt: ${createdAt}`);
     core.info(`startedAt: ${startedAt}`);
@@ -67958,6 +67973,14 @@ async function pipeline() {
     core.info(`result: ${result}`);
     core.info(`draft: ${draft}`);
     core.info(`jobLink: ${jobLink}`);
+    core.info(`repository: ${repository}`);
+    core.info(`workflow: ${workflow}`);
+    core.info(`job: ${job}`);
+    core.info(`actor: ${actor}`);
+    core.info(`runId: ${runId}`);
+    core.info(`runNumber: ${runNumber}`);
+    core.info(`sha: ${sha}`);
+    core.info(`eventName: ${eventName}`);
     sendToBigQuery({
         createdAt,
         startedAt,
@@ -67967,6 +67990,14 @@ async function pipeline() {
         result,
         draft,
         jobLink,
+        repository,
+        workflow,
+        job,
+        actor,
+        runId,
+        runNumber,
+        sha,
+        eventName,
     });
     core.info('Successfully Set CI Analytics in bigquery');
 }
