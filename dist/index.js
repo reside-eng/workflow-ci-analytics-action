@@ -68100,17 +68100,17 @@ async function pipeline() {
     const createdAt = core.getInput(inputs_1.Inputs.CreatedAt, { required: true });
     const startedAt = core.getInput(inputs_1.Inputs.StartedAt, { required: true });
     const completedAt = core.getInput(inputs_1.Inputs.CompletedAt, { required: true });
-    const matrixName = core.getInput(inputs_1.Inputs.MatrixName, { required: true });
-    const matrixValue = core.getInput(inputs_1.Inputs.MatrixValue, { required: true });
+    const matrixName = core.getInput(inputs_1.Inputs.MatrixName, { required: false });
+    const matrixValue = core.getInput(inputs_1.Inputs.MatrixValue, { required: false });
     const result = core.getInput(inputs_1.Inputs.Result, { required: true });
-    const draft = core.getInput(inputs_1.Inputs.Draft, { required: true });
-    const jobLink = core.getInput(inputs_1.Inputs.JobLink, { required: true });
+    const draft = core.getInput(inputs_1.Inputs.Draft, { required: false });
+    const jobLink = core.getInput(inputs_1.Inputs.JobLink, { required: false });
     const triggeringActor = core.getInput(inputs_1.Inputs.TriggeringActor, {
-        required: true,
+        required: false,
     });
     const runAttempt = Number(core.getInput(inputs_1.Inputs.RunAttempt, { required: true }));
-    const headRef = core.getInput(inputs_1.Inputs.HeadRef, { required: true });
-    const baseRef = core.getInput(inputs_1.Inputs.BaseRef, { required: true });
+    const headRef = core.getInput(inputs_1.Inputs.HeadRef, { required: false });
+    const baseRef = core.getInput(inputs_1.Inputs.BaseRef, { required: false });
     const runnerType = core.getInput(inputs_1.Inputs.RunnerType, { required: true });
     const runnerName = core.getInput(inputs_1.Inputs.RunnerName, { required: true });
     const { repo: { repo: repository }, workflow, job, actor, runId, runNumber, sha, eventName, } = github_1.context;
