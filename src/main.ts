@@ -64,19 +64,17 @@ async function pipeline(): Promise<void> {
   const createdAt = core.getInput(Inputs.CreatedAt, { required: true });
   const startedAt = core.getInput(Inputs.StartedAt, { required: true });
   const completedAt = core.getInput(Inputs.CompletedAt, { required: true });
-  const matrixName = core.getInput(Inputs.MatrixName, { required: true });
-  const matrixValue = core.getInput(Inputs.MatrixValue, { required: true });
+  const matrixName = core.getInput(Inputs.MatrixName);
+  const matrixValue = core.getInput(Inputs.MatrixValue);
   const result = core.getInput(Inputs.Result, { required: true });
-  const draft = core.getInput(Inputs.Draft, { required: true });
-  const jobLink = core.getInput(Inputs.JobLink, { required: true });
-  const triggeringActor = core.getInput(Inputs.TriggeringActor, {
-    required: true,
-  });
+  const draft = core.getInput(Inputs.Draft);
+  const jobLink = core.getInput(Inputs.JobLink);
+  const triggeringActor = core.getInput(Inputs.TriggeringActor);
   const runAttempt = Number(
     core.getInput(Inputs.RunAttempt, { required: true }),
   );
-  const headRef = core.getInput(Inputs.HeadRef, { required: true });
-  const baseRef = core.getInput(Inputs.BaseRef, { required: true });
+  const headRef = core.getInput(Inputs.HeadRef);
+  const baseRef = core.getInput(Inputs.BaseRef);
   const runnerType = core.getInput(Inputs.RunnerType, { required: true });
   const runnerName = core.getInput(Inputs.RunnerName, { required: true });
 
