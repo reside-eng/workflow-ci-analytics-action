@@ -1,22 +1,52 @@
 name: 'Workflow CI Analytics'
-description: 'Notify upon workflow failure/success'
+description: 'Send Github Data Analytics to the Data Warehouse'
 inputs:
   created_at:
     description: 'Timestamp when the job was created'
     required: true
-    default: ''
   started_at:
     description: 'Timestamp when the job was started'
     required: true
-    default: ''
   completed_at:
     description: 'Timestamp when the job was completed'
     required: true
+  matrix_name:
+    description: 'matrix variable name (for parallel jobs only)'
+    required: false
     default: ''
-  github-token:
-    description: 'Status of the current run'
+  matrix_value:
+    description: 'matrix variable value (for parallel jobs only)'
+    required: false
+    default: ''
+  result:
+    description: 'The outcome status for the job'
     required: true
     default: ''
+  draft:
+    description: 'Is the running job triggered by a draft'
+    required: false
+    default: 'false'
+  job_link:
+    description: 'The url for the job'
+    required: true
+  triggering_actor:
+    description: 'The triggering actor'
+    required: true
+  run_attempt:
+    description: 'The run attempt number'
+    required: true
+  head_ref:
+    description: 'The head ref'
+    required: true
+  base_ref:
+    description: 'The base ref'
+    required: true
+  runner_type:
+    description: 'The runner type'
+    required: true
+  runner_name:
+    description: 'The runner name'
+    required: true
 runs:
   using: 'node20'
   main: 'dist/index.js'
