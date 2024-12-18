@@ -48,7 +48,7 @@ async function sendToBigQuery(analyticsObject: AnalyticsObject): Promise<void> {
 
   // Create a new table in the dataset
   const table = await client
-    .dataset('github', { projectId: 'side-dw-dev' })
+    .dataset('github', { projectId: 'side-dw' })
     .table('ci_analytics');
 
   core.info(`Retrieved table ${table.id}`);

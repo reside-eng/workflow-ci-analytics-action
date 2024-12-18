@@ -68090,7 +68090,7 @@ async function sendToBigQuery(analyticsObject) {
         },
     };
     const table = await client
-        .dataset('github', { projectId: 'side-dw-dev' })
+        .dataset('github', { projectId: 'side-dw' })
         .table('ci_analytics');
     core.info(`Retrieved table ${table.id}`);
     table.insert(analyticsObject);

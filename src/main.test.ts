@@ -145,7 +145,7 @@ describe('GitHub Action - CI Analytics', () => {
 
     // Validate BigQuery interaction
     expect(bigQueryMock.dataset).toHaveBeenCalledWith('github', {
-      projectId: 'side-dw-dev',
+      projectId: 'side-dw',
     });
     expect(datasetMock.table).toHaveBeenCalledWith('ci_analytics');
     expect(insertMock).toHaveBeenCalledWith(mockExpectedAnalytics);
