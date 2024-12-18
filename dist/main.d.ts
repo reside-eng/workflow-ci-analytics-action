@@ -1,1 +1,28 @@
+export type AnalyticsObject = {
+    created_at: string;
+    started_at: string;
+    completed_at: string;
+    matrix_name: string;
+    matrix_value: string;
+    result: string;
+    draft: string;
+    job_link: string;
+    repository: string;
+    workflow: string;
+    job: string;
+    actor: string;
+    run_id: number;
+    run_number: number;
+    sha: string;
+    event_name: string;
+    run_attempt: number;
+    job_duration: number;
+    run_duration: number;
+    env: string;
+    triggering_actor: string;
+    head_ref: string;
+    base_ref: string;
+    runner_name: string;
+    runner_type: string;
+};
 export declare function run(): Promise<void>;

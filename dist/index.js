@@ -67954,8 +67954,6 @@ async function pipeline() {
     const baseRef = core.getInput(inputs_1.Inputs.BaseRef, { required: true });
     const runnerType = core.getInput(inputs_1.Inputs.RunnerType, { required: true });
     const runnerName = core.getInput(inputs_1.Inputs.RunnerName, { required: true });
-    core.info('github context object: ');
-    core.info(JSON.stringify(github_1.context, null, 2));
     const { repo: { repo: repository }, workflow, job, actor, runId, runNumber, sha, eventName, } = github_1.context;
     const createdAtDate = new Date(createdAt);
     const startedAtDate = new Date(startedAt);

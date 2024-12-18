@@ -3,7 +3,7 @@ import { context } from '@actions/github';
 import { BigQuery } from '@google-cloud/bigquery';
 import { Inputs } from './inputs';
 
-type AnalyticsObject = {
+export type AnalyticsObject = {
   created_at: string;
   started_at: string;
   completed_at: string;
@@ -79,9 +79,6 @@ async function pipeline(): Promise<void> {
   const baseRef = core.getInput(Inputs.BaseRef, { required: true });
   const runnerType = core.getInput(Inputs.RunnerType, { required: true });
   const runnerName = core.getInput(Inputs.RunnerName, { required: true });
-
-  core.info('github context object: ');
-  core.info(JSON.stringify(context, null, 2));
 
   const {
     repo: { repo: repository },
