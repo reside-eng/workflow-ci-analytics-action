@@ -28,19 +28,19 @@ inputs:
     default: 'false'
   job_link:
     description: 'The url for the job'
-    required: true
+    required: false
   triggering_actor:
     description: 'The triggering actor'
-    required: true
+    required: false
   run_attempt:
     description: 'The run attempt number'
     required: true
   head_ref:
     description: 'The head ref'
-    required: true
+    required: false
   base_ref:
     description: 'The base ref'
-    required: true
+    required: false
   runner_type:
     description: 'The runner type'
     required: true
