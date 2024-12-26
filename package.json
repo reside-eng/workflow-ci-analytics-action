@@ -52,5 +52,6 @@
   "packageManager": "yarn@4.5.3",
   "release": {
     "ci": false
-  }
+  },
+  "private": true
 }
