@@ -62,12 +62,10 @@ jobs:
         run: yarn build
 
       - name: Semantic Release
-        uses: cycjimmy/semantic-release-action@v2
+        uses: cycjimmy/semantic-release-action@v4.1.1
         id: semantic
         with:
           semantic_version: ^18
-          extra_plugins: |
-            @side/semantic-config-base"
           branches: |
             [
               '+([0-9])?(.{+([0-9]),x}).x',
@@ -77,6 +75,13 @@ jobs:
               {name: 'beta', prerelease: true},
               {name: 'alpha', prerelease: true}
             ]
+          # Config override used disable features of @semantic-release/github causing rate limit
+          # @semantic-release/exec is installed internally
+          extends: |
+            @side/semantic-config-base
+          # Sticky version until issue resolved. ref: https://github.com/semantic-release/semantic-release/issues/2922
+          extra_plugins: |
+            conventional-changelog-conventionalcommits@6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
