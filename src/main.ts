@@ -31,7 +31,12 @@ export type AnalyticsObject = {
   runner_type: string;
 };
 
-async function sendToBigQuery(analyticsObject: AnalyticsObject): Promise<void> {
+async function sendToBigQuery(
+  analyticsObject: AnalyticsObject,
+  projectId: string,
+  datasetName: string,
+  tableName: string,
+): Promise<void> {
   const client = new BigQuery();
 
   const schema =
@@ -48,8 +53,8 @@ async function sendToBigQuery(analyticsObject: AnalyticsObject): Promise<void> {
 
   // Create a new table in the dataset
   const table = await client
-    .dataset('github', { projectId: 'side-dw' })
-    .table('ci_analytics');
+    .dataset(datasetName, { projectId })
+    .table(tableName);
 
   core.info(`Retrieved table ${table.id}`);
 
@@ -61,6 +66,9 @@ async function sendToBigQuery(analyticsObject: AnalyticsObject): Promise<void> {
  */
 async function pipeline(): Promise<void> {
   core.info('Successfully triggering CI Analytics action');
+  const projectId = core.getInput(Inputs.ProjectId, { required: true });
+  const dataset = core.getInput(Inputs.Dataset, { required: true });
+  const table = core.getInput(Inputs.Table, { required: true });
   const createdAt = core.getInput(Inputs.CreatedAt, { required: true });
   const startedAt = core.getInput(Inputs.StartedAt, { required: true });
   const completedAt = core.getInput(Inputs.CompletedAt, { required: true });
@@ -139,7 +147,7 @@ async function pipeline(): Promise<void> {
   core.info('Analytics Object: ');
   core.info(JSON.stringify(analyticsObject, null, 2));
 
-  await sendToBigQuery(analyticsObject);
+  await sendToBigQuery(analyticsObject, projectId, dataset, table);
   core.info('Successfully Set CI Analytics in bigquery');
 }
 

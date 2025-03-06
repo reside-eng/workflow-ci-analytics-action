@@ -1,6 +1,15 @@
 name: 'Workflow CI Analytics'
 description: 'Send Github Data Analytics to the Data Warehouse'
 inputs:
+  project_id:
+    description: 'Google project ID where to send data'
+    required: true
+  dataset:
+    description: 'Bigquery dataset where to send data'
+    required: true
+  table:
+    description: 'Bigquery table where to send data'
+    required: true
   created_at:
     description: 'Timestamp when the job was created'
     required: true
