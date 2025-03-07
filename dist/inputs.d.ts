@@ -1,4 +1,7 @@
 export declare enum Inputs {
+    ProjectId = "project_id",
+    Dataset = "dataset",
+    Table = "table",
     CreatedAt = "created_at",
     StartedAt = "started_at",
     CompletedAt = "completed_at",

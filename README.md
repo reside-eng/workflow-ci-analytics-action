@@ -13,6 +13,21 @@ At the end of a workflow call this action to send ci analytics to big query
 ```yaml
 - uses: reside-eng/workflow-ci-analytics-action@v1
   with:
+    # Google project ID where to send data
+    #
+    # Required: true
+    project_id: ''
+
+    # Bigquery dataset where to send data
+    #
+    # Required: true
+    dataset: ''
+
+    # Bigquery table where to send data
+    #
+    # Required: true
+    table: ''
+
     # Timestamp when the job was created
     #
     # Required: true

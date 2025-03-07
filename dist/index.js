@@ -68014,6 +68014,9 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Inputs = void 0;
 var Inputs;
 (function (Inputs) {
+    Inputs["ProjectId"] = "project_id";
+    Inputs["Dataset"] = "dataset";
+    Inputs["Table"] = "table";
     Inputs["CreatedAt"] = "created_at";
     Inputs["StartedAt"] = "started_at";
     Inputs["CompletedAt"] = "completed_at";
@@ -68077,7 +68080,7 @@ const core = __importStar(__nccwpck_require__(7484));
 const github_1 = __nccwpck_require__(3228);
 const bigquery_1 = __nccwpck_require__(676);
 const inputs_1 = __nccwpck_require__(8422);
-async function sendToBigQuery(analyticsObject) {
+async function sendToBigQuery(analyticsObject, projectId, datasetName, tableName) {
     const client = new bigquery_1.BigQuery();
     const schema = 'Created_At:string, Started_At:string, Completed_At:string, MatrixName:string, MatrixValue:string, Result:string, Draft:boolean, JobLink:string';
     const options = {
@@ -68090,13 +68093,16 @@ async function sendToBigQuery(analyticsObject) {
         },
     };
     const table = await client
-        .dataset('github', { projectId: 'side-dw' })
-        .table('ci_analytics');
+        .dataset(datasetName, { projectId })
+        .table(tableName);
     core.info(`Retrieved table ${table.id}`);
     table.insert(analyticsObject);
 }
 async function pipeline() {
     core.info('Successfully triggering CI Analytics action');
+    const projectId = core.getInput(inputs_1.Inputs.ProjectId, { required: true });
+    const dataset = core.getInput(inputs_1.Inputs.Dataset, { required: true });
+    const table = core.getInput(inputs_1.Inputs.Table, { required: true });
     const createdAt = core.getInput(inputs_1.Inputs.CreatedAt, { required: true });
     const startedAt = core.getInput(inputs_1.Inputs.StartedAt, { required: true });
     const completedAt = core.getInput(inputs_1.Inputs.CompletedAt, { required: true });
@@ -68152,7 +68158,7 @@ async function pipeline() {
     };
     core.info('Analytics Object: ');
     core.info(JSON.stringify(analyticsObject, null, 2));
-    await sendToBigQuery(analyticsObject);
+    await sendToBigQuery(analyticsObject, projectId, dataset, table);
     core.info('Successfully Set CI Analytics in bigquery');
 }
 function handleError(err) {

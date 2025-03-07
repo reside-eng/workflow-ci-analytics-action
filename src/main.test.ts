@@ -53,6 +53,12 @@ describe('GitHub Action - CI Analytics', () => {
       .mockImplementation((name: string) => {
         if (Object.values(Inputs).includes(name as Inputs)) {
           switch (name) {
+            case Inputs.ProjectId:
+              return 'test';
+            case Inputs.Dataset:
+              return 'github';
+            case Inputs.Table:
+              return 'ci_analytics';
             case Inputs.CreatedAt:
               return mockExpectedAnalytics.created_at;
             case Inputs.StartedAt:
@@ -145,7 +151,7 @@ describe('GitHub Action - CI Analytics', () => {
 
     // Validate BigQuery interaction
     expect(bigQueryMock.dataset).toHaveBeenCalledWith('github', {
-      projectId: 'side-dw',
+      projectId: 'test',
     });
     expect(datasetMock.table).toHaveBeenCalledWith('ci_analytics');
     expect(insertMock).toHaveBeenCalledWith(mockExpectedAnalytics);
