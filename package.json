@@ -24,7 +24,7 @@
     "postpack": "pinst --enable"
   },
   "dependencies": {
-    "@actions/core": "1.11.1",
+    "@actions/core": "3.0.0",
     "@actions/github": "6.0.0",
     "@google-cloud/bigquery": "7.9.1",
     "@types/node": "22.10.2"
