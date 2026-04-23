@@ -27,7 +27,7 @@
     "@actions/core": "1.11.1",
     "@actions/github": "6.0.0",
     "@google-cloud/bigquery": "7.9.1",
-    "@types/node": "22.10.2"
+    "@types/node": "24.12.2"
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
