@@ -57,6 +57,6 @@ inputs:
     description: 'The runner name'
     required: true
 runs:
-  using: 'node20'
+  using: 'node24'
   main: 'dist/index.js'
   post-if: 'success()'
