@@ -29,7 +29,8 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: yarn
-
+          # Sets us to be able to use NODE_AUTH_TOKEN for npm auth
+          registry-url: 'https://registry.npmjs.org'
       - name: Install dependencies
         env:
           YARN_NPM_AUTH_TOKEN: ${{ secrets.NPM_READ_TOKEN }}
@@ -68,12 +69,13 @@ jobs:
           # Config override used disable features of @semantic-release/github causing rate limit
           # @semantic-release/exec is installed internally
           extends: |
-            @side/semantic-config-base
+            @side/semantic-config-base-without-npm
           # Sticky version until issue resolved. ref: https://github.com/semantic-release/semantic-release/issues/2922
           extra_plugins: |
             conventional-changelog-conventionalcommits@8
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_READ_TOKEN }}
 
       - name: Push updates to branch for major version
         # If a new version is published, i.e. v1.2.3 then this step will update
