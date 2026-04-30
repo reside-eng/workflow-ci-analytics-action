@@ -52,13 +52,11 @@ async function sendToBigQuery(
   };
 
   // Create a new table in the dataset
-  const table = await client
-    .dataset(datasetName, { projectId })
-    .table(tableName);
+  const table = client.dataset(datasetName, { projectId }).table(tableName);
 
   core.info(`Retrieved table ${table.id}`);
 
-  table.insert(analyticsObject);
+  await table.insert(analyticsObject, options);
 }
 
 /**
