@@ -9,12 +9,12 @@
     "ignoreUnknown": false,
     "includes": [
       "**/*",
-      "!**/node_modules/**",
+      "!**/node_modules",
       "!**/*.test.ts",
       "!**/*.d.ts",
-      "!**/dist/**",
-      "!coverage/**",
-      "!.yarn/**"
+      "!**/dist",
+      "!coverage",
+      "!.yarn"
     ]
   },
   "assist": { "actions": { "source": { "organizeImports": "on" } } },

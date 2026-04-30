@@ -65430,7 +65430,7 @@ const inputs_1 = __nccwpck_require__(8422);
 async function sendToBigQuery(analyticsObject, projectId, datasetName, tableName) {
     const client = new bigquery_1.BigQuery();
     const schema = 'Created_At:string, Started_At:string, Completed_At:string, MatrixName:string, MatrixValue:string, Result:string, Draft:boolean, JobLink:string';
-    const options = {
+    const _options = {
         schema: schema,
         location: 'US',
         timePartitioning: {
