@@ -65439,11 +65439,9 @@ async function sendToBigQuery(analyticsObject, projectId, datasetName, tableName
             field: 'date',
         },
     };
-    const table = await client
-        .dataset(datasetName, { projectId })
-        .table(tableName);
+    const table = client.dataset(datasetName, { projectId }).table(tableName);
     core.info(`Retrieved table ${table.id}`);
-    table.insert(analyticsObject);
+    await table.insert(analyticsObject, options);
 }
 async function pipeline() {
     core.info('Successfully triggering CI Analytics action');

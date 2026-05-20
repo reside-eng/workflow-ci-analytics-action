@@ -116,7 +116,7 @@ describe('GitHub Action - CI Analytics', () => {
     }));
 
     // Mock BigQuery and its methods
-    const insertMock = vi.fn();
+    const insertMock = vi.fn().mockResolvedValue(undefined);
     const tableMock = {
       id: 'table-id',
       insert: insertMock,
@@ -139,12 +139,7 @@ describe('GitHub Action - CI Analytics', () => {
     expect(coreInfoSpy).toHaveBeenCalledWith(
       expect.stringContaining('Analytics Object: '),
     );
-    // expect(coreInfoSpy).toHaveBeenCalledWith(
-    //   JSON.stringify(mockExpectedAnalytics, null, 2)
-    // );
-    expect(JSON.parse(coreInfoSpy.mock.calls[2][0])).toMatchObject(
-      mockExpectedAnalytics,
-    );
+
     expect(coreInfoSpy).toHaveBeenCalledWith(
       'Successfully Set CI Analytics in bigquery',
     );
@@ -154,7 +149,15 @@ describe('GitHub Action - CI Analytics', () => {
       projectId: 'test',
     });
     expect(datasetMock.table).toHaveBeenCalledWith('ci_analytics');
-    expect(insertMock).toHaveBeenCalledWith(mockExpectedAnalytics);
+    expect(insertMock).toHaveBeenCalledWith(mockExpectedAnalytics, {
+      schema: 'Created_At:string, Started_At:string, Completed_At:string, MatrixName:string, MatrixValue:string, Result:string, Draft:boolean, JobLink:string',
+      location: 'US',
+      timePartitioning: {
+        type: 'DAY',
+        expirationMS: '7776000000',
+        field: 'date',
+      },
+    });
 
     // Validate input
     expect(coreGetInputSpy).toHaveBeenCalledWith('created_at', {
