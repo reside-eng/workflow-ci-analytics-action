@@ -1,7 +1,7 @@
 import * as core from '@actions/core';
 import { context } from '@actions/github';
 import { BigQuery } from '@google-cloud/bigquery';
-import { Inputs } from './inputs';
+import { Inputs } from './inputs.js';
 
 export type AnalyticsObject = {
   created_at: string;
@@ -156,7 +156,7 @@ async function pipeline(): Promise<void> {
  * @param err Any possible errors
  */
 function handleError(err: Error): void {
-  console.error(err);
+  core.error(err);
   core.setFailed(err.message);
 }
 

@@ -36,11 +36,14 @@ jobs:
           YARN_NPM_AUTH_TOKEN: ${{ secrets.NPM_READ_TOKEN }}
         run: yarn install --immutable
 
-      - name: Lint
-        run: yarn lint
+      - name: Check
+        run: yarn check
+
+      - name: Type check
+        run: yarn types:check
 
       - name: Test
-        run: yarn test --coverage
+        run: yarn test:cov
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
