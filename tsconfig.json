@@ -1,21 +1,10 @@
 {
+  "extends": "@tsconfig/node24/tsconfig.json",
   "compilerOptions": {
-    // Previously came from @tsconfig/node18 module, target, and moduleResolution
-    // may be changed as part of ESM support [PLAT-5740]
-    "lib": ["es2022", "DOM", "DOM.Iterable"],
-    "module": "NodeNext",
-    "target": "es2022",
-    "moduleResolution": "nodenext",
-    "strict": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "removeComments": true,
-    "declaration": true,
+    "types": ["node"],
     "outDir": "./dist",
     "rootDir": "./src",
-    "noImplicitAny": true,
-    "jsx": "preserve"
+    "noImplicitAny": true
   },
   "exclude": ["node_modules", "**/*.test.ts"],
   "include": ["src"]

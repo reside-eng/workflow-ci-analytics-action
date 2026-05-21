@@ -20,3 +20,9 @@ yarn-error.log*
 
 # tests
 /coverage
+
+# claude code
+.claude/worktrees
+.claude/memory
+.claude/projects
+.claude/settings.local.json

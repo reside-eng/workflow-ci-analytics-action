@@ -1,55 +1,90 @@
 {
-  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.4.15/schema.json",
   "vcs": {
-    "enabled": false,
+    "enabled": true,
     "clientKind": "git",
-    "useIgnoreFile": false
+    "useIgnoreFile": true,
+    "defaultBranch": "main"
   },
   "files": {
     "ignoreUnknown": false,
     "includes": [
-      "**/*",
+      "**",
       "!**/node_modules",
-      "!**/*.test.ts",
-      "!**/*.d.ts",
-      "!**/dist",
-      "!coverage",
-      "!.yarn"
+      "!**/coverage",
+      "!**/.yarn",
+      "!**/yarn.lock",
+      "!**/.github/CODEOWNERS",
+      "!**/dist"
     ]
   },
-  "assist": { "actions": { "source": { "organizeImports": "on" } } },
   "formatter": {
-    "enabled": true,
-    "indentStyle": "space"
+    "useEditorconfig": true,
+    "indentStyle": "space",
+    "bracketSpacing": true
   },
+  "assist": { "actions": { "source": { "organizeImports": "on" } } },
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "recommended": true,
+      "complexity": {
+        "noUselessStringConcat": "error",
+        "noUselessUndefinedInitialization": "error",
+        "noVoid": "error"
+      },
+      "correctness": {
+        "noUndeclaredVariables": "error",
+        "noUnusedImports": "error",
+        "noUnusedVariables": "error"
+      },
+      "style": {
+        "noYodaExpression": "error",
+        "useCollapsedElseIf": "error",
+        "useConsistentBuiltinInstantiation": "error",
+        "useDefaultSwitchClause": "error",
+        "useShorthandAssign": "error",
+        "noParameterAssign": "error",
+        "useAsConstAssertion": "error",
+        "useDefaultParameterLast": "error",
+        "useEnumInitializers": "error",
+        "useSelfClosingElements": "error",
+        "useSingleVarDeclarator": "error",
+        "noUnusedTemplateLiteral": "error",
+        "useNumberNamespace": "error",
+        "noInferrableTypes": "error",
+        "noUselessElse": "error",
+        "useArrayLiterals": "error"
+      },
+      "suspicious": {
+        "noConsole": "warn",
+        "noEmptyBlockStatements": "error",
+        "useAwait": "error"
+      }
     }
   },
   "javascript": {
-    "formatter": {
-      "quoteStyle": "single"
-    }
+    "formatter": { "quoteStyle": "single" }
   },
   "overrides": [
+    { "includes": ["**/package.json"], "formatter": { "lineWidth": 1 } },
     {
-      "includes": ["**/package.json"],
-      "formatter": {
-        "lineWidth": 1
+      "includes": [
+        "**/__tests__/**/*",
+        "**/*.{spec,test}.{js,jsx,ts,tsx}",
+        "**/__mocks__/**"
+      ],
+      "linter": {
+        "rules": {
+          "complexity": { "useArrowFunction": "off" },
+          "suspicious": { "noImplicitAnyLet": "off", "noExplicitAny": "off" },
+          "style": { "noNonNullAssertion": "off" }
+        }
       }
     },
     {
-      "includes": ["src/**/*.test.ts", "src/**/__mocks__/**"],
-      "linter": {
-        "rules": {
-          "suspicious": {
-            "noImplicitAnyLet": "off",
-            "noExplicitAny": "off"
-          }
-        }
-      }
+      "includes": ["bin/**"],
+      "linter": { "rules": { "suspicious": { "noConsole": "off" } } }
     }
   ]
 }

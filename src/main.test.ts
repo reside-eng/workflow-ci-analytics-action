@@ -1,18 +1,15 @@
 import * as core from '@actions/core';
 import { BigQuery } from '@google-cloud/bigquery';
 import {
-  type MockInstance,
   beforeEach,
   describe,
   expect,
   it,
+  type MockInstance,
   vi,
 } from 'vitest';
-import { Inputs } from './inputs'; // Adjust the path to your Inputs enum
-import { type AnalyticsObject, run } from './main'; // Adjust the path to your action file
-
-vi.mock('@actions/core');
-vi.mock('@google-cloud/bigquery');
+import { Inputs } from './inputs.js';
+import { type AnalyticsObject, run } from './main.js';
 
 process.env.ENV = 'test';
 
@@ -42,6 +39,23 @@ const mockExpectedAnalytics: AnalyticsObject = vi.hoisted(() => ({
   base_ref: 'base_ref',
   runner_name: 'runner_name',
   runner_type: 'runner_type',
+}));
+
+vi.mock('@actions/core');
+vi.mock('@google-cloud/bigquery');
+vi.mock('@actions/github', () => ({
+  context: {
+    repo: {
+      repo: mockExpectedAnalytics.repository,
+    },
+    workflow: mockExpectedAnalytics.workflow,
+    job: mockExpectedAnalytics.job,
+    actor: mockExpectedAnalytics.actor,
+    runId: mockExpectedAnalytics.run_id,
+    runNumber: mockExpectedAnalytics.run_number,
+    sha: mockExpectedAnalytics.sha,
+    eventName: mockExpectedAnalytics.event_name,
+  },
 }));
 
 describe('GitHub Action - CI Analytics', () => {
@@ -99,22 +113,6 @@ describe('GitHub Action - CI Analytics', () => {
     // Mock core.info
     const coreInfoSpy = vi.spyOn(core, 'info');
 
-    // Mock context
-    vi.mock('@actions/github', () => ({
-      context: {
-        repo: {
-          repo: mockExpectedAnalytics.repository,
-        },
-        workflow: mockExpectedAnalytics.workflow,
-        job: mockExpectedAnalytics.job,
-        actor: mockExpectedAnalytics.actor,
-        runId: mockExpectedAnalytics.run_id,
-        runNumber: mockExpectedAnalytics.run_number,
-        sha: mockExpectedAnalytics.sha,
-        eventName: mockExpectedAnalytics.event_name,
-      },
-    }));
-
     // Mock BigQuery and its methods
     const insertMock = vi.fn();
     const tableMock = {
@@ -127,7 +125,11 @@ describe('GitHub Action - CI Analytics', () => {
     const bigQueryMock = {
       dataset: vi.fn(() => datasetMock),
     };
-    vi.mocked(BigQuery).mockImplementation(() => bigQueryMock as any);
+    // `function` (not arrow) because BigQuery is invoked with `new` —
+    // arrow functions aren't constructors.
+    vi.mocked(BigQuery).mockImplementation(function () {
+      return bigQueryMock as any;
+    } as any);
 
     // Run the action
     await run();
@@ -166,10 +168,11 @@ describe('GitHub Action - CI Analytics', () => {
     const errorMessage = 'Test error';
     const coreSetFailedSpy = vi.spyOn(core, 'setFailed');
 
-    // Mock BigQuery to throw an error
-    vi.mocked(BigQuery).mockImplementation(() => {
+    // Mock BigQuery to throw on construction. `function` (not arrow)
+    // because BigQuery is invoked with `new`.
+    vi.mocked(BigQuery).mockImplementation(function () {
       throw new Error(errorMessage);
-    });
+    } as any);
 
     await run();
 
