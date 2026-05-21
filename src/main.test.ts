@@ -125,7 +125,8 @@ describe('GitHub Action - CI Analytics', () => {
     const bigQueryMock = {
       dataset: vi.fn(() => datasetMock),
     };
-    // biome-ignore lint/complexity/useArrowFunction: vitest 4 requires `function` for `new`-able mocks
+    // `function` (not arrow) because BigQuery is invoked with `new` —
+    // arrow functions aren't constructors.
     vi.mocked(BigQuery).mockImplementation(function () {
       return bigQueryMock as any;
     } as any);
@@ -167,8 +168,8 @@ describe('GitHub Action - CI Analytics', () => {
     const errorMessage = 'Test error';
     const coreSetFailedSpy = vi.spyOn(core, 'setFailed');
 
-    // Mock BigQuery to throw an error
-    // biome-ignore lint/complexity/useArrowFunction: vitest 4 requires `function` for `new`-able mocks
+    // Mock BigQuery to throw on construction. `function` (not arrow)
+    // because BigQuery is invoked with `new`.
     vi.mocked(BigQuery).mockImplementation(function () {
       throw new Error(errorMessage);
     } as any);

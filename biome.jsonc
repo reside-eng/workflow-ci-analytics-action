@@ -76,6 +76,7 @@
       ],
       "linter": {
         "rules": {
+          "complexity": { "useArrowFunction": "off" },
           "suspicious": { "noImplicitAnyLet": "off", "noExplicitAny": "off" },
           "style": { "noNonNullAssertion": "off" }
         }
