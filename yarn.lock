@@ -227,13 +227,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/config-conventional@npm:^20.0.0":
-  version: 20.5.3
-  resolution: "@commitlint/config-conventional@npm:20.5.3"
+"@commitlint/config-conventional@npm:21.0.0":
+  version: 21.0.0
+  resolution: "@commitlint/config-conventional@npm:21.0.0"
   dependencies:
-    "@commitlint/types": "npm:^20.5.0"
+    "@commitlint/types": "npm:^21.0.0"
     conventional-changelog-conventionalcommits: "npm:^9.2.0"
-  checksum: 10c0/75efad3f9932e5fe6dc93f9c57af47cfe15a44a6c340b915bdddb6c7592425126c318ee0c00339a1d9b271a71fb6eae1afa3fd096af9c7bfcf6b87ea35bfb810
+  checksum: 10c0/9f4356a70616b977328a8a3f558a287ec6ac3a2416aabbb72ae06525a25b34e781dd6d169afa03399b1df3d979d13faa8d311ff42b569ed1ecf84f5e36fae9b4
   languageName: node
   linkType: hard
 
@@ -384,17 +384,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@commitlint/types@npm:^20.5.0":
-  version: 20.5.0
-  resolution: "@commitlint/types@npm:20.5.0"
-  dependencies:
-    conventional-commits-parser: "npm:^6.3.0"
-    picocolors: "npm:^1.1.1"
-  checksum: 10c0/682913a179074251a65990ce37f784849375ba02d5d80a77299580fb34781747cc48087c3516023b748fd76ef38d3b5c26863767532ed739565cb5a80605cb44
-  languageName: node
-  linkType: hard
-
-"@commitlint/types@npm:^21.0.1":
+"@commitlint/types@npm:^21.0.0, @commitlint/types@npm:^21.0.1":
   version: 21.0.1
   resolution: "@commitlint/types@npm:21.0.1"
   dependencies:
@@ -1160,14 +1150,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@side/commitlint-config@npm:1.1.1":
-  version: 1.1.1
-  resolution: "@side/commitlint-config@npm:1.1.1"
+"@side/commitlint-config@npm:2.0.2":
+  version: 2.0.2
+  resolution: "@side/commitlint-config@npm:2.0.2"
   dependencies:
-    "@commitlint/config-conventional": "npm:^20.0.0"
+    "@commitlint/config-conventional": "npm:21.0.0"
   peerDependencies:
-    "@commitlint/cli": ">=19.0.0"
-  checksum: 10c0/ab040e00706db4083a15c5b44bd6402396cacd9c51dba1e5a58030604fc7f3fbecdde8fa87fa2007f3947c5a49cd1f2e8ec939407c4651b7997a8fc4039d54ac
+    "@commitlint/cli": ">=21.0.0"
+  checksum: 10c0/09c5e322c43a4e5f410825d706e72ca177c6eafe5159d16fce6f96d1612d3387ad29d99d44192d9c79f0b732b9f132de43d385a36eaceb172bdb664ade48aff8
   languageName: node
   linkType: hard
 
@@ -1180,7 +1170,7 @@ __metadata:
     "@biomejs/biome": "npm:2.4.15"
     "@commitlint/cli": "npm:21.0.1"
     "@google-cloud/bigquery": "npm:8.3.1"
-    "@side/commitlint-config": "npm:1.1.1"
+    "@side/commitlint-config": "npm:2.0.2"
     "@tsconfig/node24": "npm:24.0.4"
     "@types/js-yaml": "npm:4.0.9"
     "@types/node": "npm:24.12.4"
