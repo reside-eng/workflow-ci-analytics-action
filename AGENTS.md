@@ -21,8 +21,8 @@ TypeScript GitHub Action. ESM end-to-end (`"type": "module"`). Runtime: `node24`
 ## Repo conventions
 
 - **Commit messages:** Conventional Commits — `<type>(<scope>): <subject>`. Enforced by commitlint on `commit-msg`.
-- **Pre-commit:** Lefthook runs `yarn check:fix:staged` (Biome auto-fix on staged files), `yarn types:check`, and `yarn build` + `git add dist README.md`. Don't bypass it — `dist/` and `README.md` must stay in sync with source and `action.yml`.
-- **`dist/` is committed.** It's force-pushed to the `v1` major-version branch on release so `uses: reside-eng/workflow-ci-analytics-action@v1` resolves a runnable bundle.
+- **Pre-commit:** Lefthook runs `yarn check:fix:staged` (Biome auto-fix on staged files), `yarn types:check`, and `yarn build:docs` + `git add README.md`. Don't bypass it — `README.md` must stay in sync with `action.yml` (`dist/` is built on release, not committed).
+- **`dist/` is gitignored and built on release.** The release workflow rebuilds it and force-adds it to the floating major tag (`refs/tags/v1`) so `uses: reside-eng/workflow-ci-analytics-action@v1` resolves a runnable bundle. Full-version tags (`vX.Y.Z`) do **not** carry `dist/`; always consume via `@vN`.
 - **Yarn, not npm/npx.** Use `yarn <script>` for package scripts and `yarn dlx <pkg>` for one-off CLIs. `packageManager` is pinned in `package.json`.
 
 ## Stale husky hook gotcha
