@@ -21,6 +21,9 @@ yarn-error.log*
 # tests
 /coverage
 
+# build output (built on release and force-added to the major tag, not committed)
+dist
+
 # claude code
 .claude/worktrees
 .claude/memory

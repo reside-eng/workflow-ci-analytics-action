@@ -16,5 +16,5 @@ pre-commit:
       run: yarn check:fix:staged
     - name: Check types
       run: yarn types:check
-    - name: Rebuild dist and README
-      run: yarn build && git add dist README.md
+    - name: Rebuild README from action.yml
+      run: yarn build:docs && git add README.md
